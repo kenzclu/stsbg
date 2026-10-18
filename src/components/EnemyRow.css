@@ -25,3 +25,54 @@
         outline-offset: 2px;
     }
 }
+
+.add-enemy-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    flex: 1 1 150px;
+    min-width: 150px;
+
+    background-color: var(--code-bg);
+}
+
+.add-enemy-input {
+    width: 60px;
+    background-color: transparent;
+    border: 2px solid var(--accent-border);
+    color: inherit;
+    font-size: 16px;
+    text-align: center;
+
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+}
+
+.confirm-add-enemy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: var(--accent);
+    font-size: 18px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    &:hover:not(:disabled) {
+        border-color: var(--accent-border);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}

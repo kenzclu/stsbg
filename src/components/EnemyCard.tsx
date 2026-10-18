@@ -1,15 +1,21 @@
 import "./EnemyCard.css";
 
+export type Enemy = {
+    name: string,
+    hp: number,
+}
+
 type EnemyCardProps = {
-    label: string,
+    enemy: Enemy,
 }
 
 export function EnemyCard(props: EnemyCardProps) {
-    const { label } = props;
+    const { enemy } = props;
 
     return (
         <div className="enemy-card">
-            <div>{label}</div>
+            <div>{enemy.name}</div>
+            <div>{enemy.hp} HP</div>
         </div>
     )
 }

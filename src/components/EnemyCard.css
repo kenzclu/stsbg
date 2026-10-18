@@ -1,7 +1,9 @@
 .enemy-card {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 4px;
 
     flex: 1 1 150px;
     min-width: 150px;

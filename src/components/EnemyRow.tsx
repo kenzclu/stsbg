@@ -1,22 +1,94 @@
 import { useState } from "react";
 import "./EnemyRow.css";
-import { EnemyCard } from "./EnemyCard";
+import { EnemyCard, type Enemy } from "./EnemyCard";
 
 export function EnemyRow() {
-    const [enemyCount, setEnemyCount] = useState(0);
+    const [enemies, setEnemies] = useState<Enemy[]>([]);
+    const [hpInput, setHpInput] = useState<string | null>(null);
 
-    const addEnemy = () => {
-        setEnemyCount(enemyCount + 1);
+    const cancelAdding = () => {
+        setHpInput(null);
+    };
+
+    const confirmAdding = () => {
+        const hp = hpInput === null ? null : parsePositiveInteger(hpInput);
+        if (hp === null) {
+            return;
+        }
+        setEnemies([...enemies, { name: `Enemy ${enemies.length + 1}`, hp }]);
+        setHpInput(null);
     };
 
     return (
         <div className="enemy-row">
-            {Array.from({ length: enemyCount }, (_, i) => (
-                <EnemyCard key={i} label={`Enemy ${i + 1}`} />
+            {enemies.map((enemy, i) => (
+                <EnemyCard key={i} enemy={enemy} />
             ))}
-            <button className="add-enemy" onClick={addEnemy} aria-label="Add enemy">
-                +
-            </button>
+            {hpInput !== null ? (
+                <AddEnemyForm
+                    hpInput={hpInput}
+                    onHpInputChange={setHpInput}
+                    onConfirm={confirmAdding}
+                    onCancel={cancelAdding}
+                />
+            ) : (
+                <button className="add-enemy" onClick={() => setHpInput("")} aria-label="Add enemy">
+                    +
+                </button>
+            )}
         </div>
     )
+}
+
+type AddEnemyFormProps = {
+    hpInput: string,
+    onHpInputChange: (value: string) => void,
+    onConfirm: () => void,
+    onCancel: () => void,
+}
+
+function AddEnemyForm(props: AddEnemyFormProps) {
+    const { hpInput, onHpInputChange, onConfirm, onCancel } = props;
+
+    return (
+        <form
+            className="add-enemy-form"
+            onSubmit={(e) => {
+                e.preventDefault();
+                onConfirm();
+            }}
+        >
+            <input
+                type="number"
+                min="1"
+                step="1"
+                className="add-enemy-input"
+                value={hpInput}
+                onChange={(e) => onHpInputChange(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                        onCancel();
+                    }
+                }}
+                onBlur={onCancel}
+                placeholder="HP"
+                autoFocus
+                aria-label="Enemy HP"
+            />
+            <button
+                type="submit"
+                className="confirm-add-enemy"
+                onMouseDown={(e) => e.preventDefault()}
+                disabled={parsePositiveInteger(hpInput) === null}
+                aria-label="Confirm add enemy"
+            >
+                ✓
+            </button>
+        </form>
+    )
+}
+
+function parsePositiveInteger(value: string) {
+    const n = Number(value);
+    return Number.isInteger(n) && n > 0 ? n : null;
 }
