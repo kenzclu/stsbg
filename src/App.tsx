@@ -1,8 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { HeroCard } from "./components/HeroCard";
 import { CharacterSelect } from "./components/CharacterSelect";
-import { EnemyRow } from "./components/EnemyRow";
+import { CombatRow } from "./components/CombatRow";
 
 const AVAILABLE_CHARACTERS = ["Ironclad", "Silent", "Defect", "Watcher"];
 const MAX_CHARACTERS = 4;
@@ -27,10 +26,7 @@ function App() {
           onSelect={onClick}
         />
         {characters.map((name) => (
-          <div className="rows">
-            <HeroCard name={name} />
-            <EnemyRow />
-          </div>
+          <CombatRow key={name} heroName={name} />
         ))}
       </div>
     </>

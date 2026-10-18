@@ -10,3 +10,105 @@
 
     background-color: var(--code-bg);
 }
+
+.enemy-hp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.adjust-hp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: var(--accent);
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    &:hover:not(:disabled) {
+        border-color: var(--accent-border);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}
+
+.custom-damage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: transparent;
+    border: 2px solid var(--accent-border);
+    color: var(--accent);
+    font-size: 14px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    &:hover:not(:disabled) {
+        border-color: var(--accent);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}
+
+.custom-damage-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.custom-damage-input {
+    width: 60px;
+    background-color: transparent;
+    border: 2px solid var(--accent-border);
+    color: inherit;
+    font-size: 16px;
+    text-align: center;
+
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+}
+
+.confirm-custom-damage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: transparent;
+    border: 2px solid transparent;
+    color: var(--accent);
+    font-size: 18px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+
+    &:hover:not(:disabled) {
+        border-color: var(--accent-border);
+    }
+    &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}

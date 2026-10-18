@@ -2,8 +2,14 @@ import { useState } from "react";
 import "./EnemyRow.css";
 import { EnemyCard, type Enemy } from "./EnemyCard";
 
-export function EnemyRow() {
-    const [enemies, setEnemies] = useState<Enemy[]>([]);
+type EnemyRowProps = {
+    enemies: Enemy[],
+    onAddEnemy: (maxHp: number) => void,
+    onAdjustHp: (index: number, delta: number) => void,
+}
+
+export function EnemyRow(props: EnemyRowProps) {
+    const { enemies, onAddEnemy, onAdjustHp } = props;
     const [hpInput, setHpInput] = useState<string | null>(null);
 
     const cancelAdding = () => {
@@ -15,14 +21,14 @@ export function EnemyRow() {
         if (hp === null) {
             return;
         }
-        setEnemies([...enemies, { name: `Enemy ${enemies.length + 1}`, hp }]);
+        onAddEnemy(hp);
         setHpInput(null);
     };
 
     return (
         <div className="enemy-row">
             {enemies.map((enemy, i) => (
-                <EnemyCard key={i} enemy={enemy} />
+                <EnemyCard key={i} enemy={enemy} onAdjustHp={(delta) => onAdjustHp(i, delta)} />
             ))}
             {hpInput !== null ? (
                 <AddEnemyForm
