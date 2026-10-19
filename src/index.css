@@ -103,6 +103,11 @@ code,
   color: var(--text-h);
 }
 
+.label-strong {
+  color: var(--text-h);
+  font-weight: 700;
+}
+
 code {
   font-size: 15px;
   line-height: 135%;

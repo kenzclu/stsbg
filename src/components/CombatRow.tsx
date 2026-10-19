@@ -11,12 +11,16 @@ export function CombatRow(props: CombatRowProps) {
     const { heroName } = props;
     const [enemies, setEnemies] = useState<Enemy[]>([]);
 
+    const updateEnemies = (update: (enemies: Enemy[]) => Enemy[]) => {
+        setEnemies(update(enemies));
+    };
+
     const addEnemy = (maxHp: number) => {
-        setEnemies([...enemies, { name: `Enemy ${enemies.length + 1}`, currentHp: maxHp, maxHp }]);
+        updateEnemies((enemies) => [...enemies, { name: `Enemy ${enemies.length + 1}`, currentHp: maxHp, maxHp }]);
     };
 
     const adjustHp = (index: number, delta: number) => {
-        setEnemies(
+        updateEnemies((enemies) =>
             enemies.map((enemy, i) =>
                 i === index ? { ...enemy, currentHp: clamp(enemy.currentHp + delta, 0, enemy.maxHp) } : enemy,
             ),
@@ -24,7 +28,9 @@ export function CombatRow(props: CombatRowProps) {
     };
 
     const damageAll = (amount: number) => {
-        setEnemies(enemies.map((enemy) => ({ ...enemy, currentHp: clamp(enemy.currentHp - amount, 0, enemy.maxHp) })));
+        updateEnemies((enemies) =>
+            enemies.map((enemy) => ({ ...enemy, currentHp: clamp(enemy.currentHp - amount, 0, enemy.maxHp) })),
+        );
     };
 
     return (

@@ -31,7 +31,7 @@ export function EnemyCard(props: EnemyCardProps) {
 
     return (
         <div className="enemy-card">
-            <div>{enemy.name}</div>
+            <div className="label-strong">{enemy.name}</div>
             <div className="enemy-hp">
                 <button
                     className="adjust-hp"
@@ -41,7 +41,7 @@ export function EnemyCard(props: EnemyCardProps) {
                 >
                     −
                 </button>
-                <span>{enemy.currentHp}/{enemy.maxHp} HP</span>
+                <span className="label-strong">{enemy.currentHp}/{enemy.maxHp} HP</span>
                 <button
                     className="adjust-hp"
                     onClick={() => onAdjustHp(1)}

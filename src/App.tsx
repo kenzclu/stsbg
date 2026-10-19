@@ -8,6 +8,7 @@ const MAX_CHARACTERS = 4;
 
 function App() {
   const [characters, setCharacters] = useState<string[]>([]);
+  const [resetNonce, setResetNonce] = useState(0);
 
   const onClick = (character: string) => {
     if (characters.includes(character) || characters.length >= MAX_CHARACTERS) {
@@ -19,14 +20,19 @@ function App() {
   return (
     <>
       <div className="main-container">
-        <CharacterSelect
-          availableCharacters={AVAILABLE_CHARACTERS}
-          characters={characters}
-          maxCharacters={MAX_CHARACTERS}
-          onSelect={onClick}
-        />
+        <div className="controls">
+          <CharacterSelect
+            availableCharacters={AVAILABLE_CHARACTERS}
+            characters={characters}
+            maxCharacters={MAX_CHARACTERS}
+            onSelect={onClick}
+          />
+          <button className="reset-enemies" onClick={() => setResetNonce(resetNonce + 1)}>
+            Reset
+          </button>
+        </div>
         {characters.map((name) => (
-          <CombatRow key={name} heroName={name} />
+          <CombatRow key={`${name}-${resetNonce}`} heroName={name} />
         ))}
       </div>
     </>

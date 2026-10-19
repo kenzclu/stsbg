@@ -6,10 +6,12 @@
   height: 100vh;
 }
 
-.character-select {
+.controls {
   position: absolute;
   top: 12px;
   right: 12px;
+  display: flex;
+  gap: 8px;
 }
 
 .rows {

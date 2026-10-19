@@ -25,7 +25,7 @@ export function HeroCard(props: HeroCardProps) {
 
     return (
         <div className="hero-card">
-            <div>{name}</div>
+            <div className="label-strong">{name}</div>
             <div className="damage-enemies">
                 <button
                     className="damage-enemies-one"
