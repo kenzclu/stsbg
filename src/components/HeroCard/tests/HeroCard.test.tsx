@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { HeroCard } from "./HeroCard";
+import { HeroCard } from "../HeroCard";
 
 describe("HeroCard", () => {
   it("deals 1 damage to the row when the preset button is clicked", async () => {

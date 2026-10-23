@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { CharacterSelect } from "./components/CharacterSelect";
-import { CombatRow } from "./components/CombatRow";
+import { CharacterSelect } from "./components/CharacterSelect/CharacterSelect";
+import { CombatRow } from "./components/CombatRow/CombatRow";
 
 const AVAILABLE_CHARACTERS = ["Ironclad", "Silent", "Defect", "Watcher"];
 const MAX_CHARACTERS = 4;

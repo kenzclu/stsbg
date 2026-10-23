@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { EnemyRow } from "./EnemyRow";
-import type { Enemy } from "./EnemyCard";
+import { EnemyRow } from "../EnemyRow";
+import type { Enemy } from "../../EnemyCard/EnemyCard";
 
 describe("EnemyRow", () => {
   it("renders one EnemyCard per enemy", () => {

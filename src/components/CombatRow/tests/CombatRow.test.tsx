@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CombatRow } from "./CombatRow";
+import { CombatRow } from "../CombatRow";
 
 describe("CombatRow", () => {
   it("adds an enemy with the entered HP as its starting and max HP", async () => {

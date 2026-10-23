@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./EnemyRow.css";
-import { EnemyCard, type Enemy } from "./EnemyCard";
+import { EnemyCard, type Enemy } from "../EnemyCard/EnemyCard";
 
 type EnemyRowProps = {
     enemies: Enemy[],

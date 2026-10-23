@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { EnemyCard, type Enemy } from "./EnemyCard";
+import { EnemyCard, type Enemy } from "../EnemyCard";
 
 function makeEnemy(overrides: Partial<Enemy> = {}): Enemy {
   return { name: "Enemy 1", currentHp: 5, maxHp: 10, ...overrides };

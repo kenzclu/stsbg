@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { HeroCard } from "./HeroCard";
-import { EnemyRow } from "./EnemyRow";
-import type { Enemy } from "./EnemyCard";
+import { HeroCard } from "../HeroCard/HeroCard";
+import { EnemyRow } from "../EnemyRow/EnemyRow";
+import type { Enemy } from "../EnemyCard/EnemyCard";
 
 type CombatRowProps = {
     heroName: string,

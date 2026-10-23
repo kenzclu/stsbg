@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CharacterSelect } from "./CharacterSelect";
+import { CharacterSelect } from "../CharacterSelect";
 
 describe("CharacterSelect", () => {
   it("omits already-picked characters from the options", () => {
