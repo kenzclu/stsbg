@@ -27,6 +27,11 @@ This is a React 19 + TypeScript + Vite app. Entry point is `src/main.tsx` → `s
 
 - Favor modular changes over growing existing files: when adding new behavior, prefer a new component/module under `src/components/` (colocated with its own CSS, following the `HeroCard`/`CharacterSelect` pattern) rather than expanding `App.tsx`. Only keep logic in `App.tsx` when it's truly top-level app state that multiple components need.
 
+## Engineering principles
+
+- **Chesterton's fence**: before removing or changing code that looks odd, pointless, or redundant, understand why it's there first. Check git history/blame and surrounding usage; if there's no clear reason after investigating, it's fine to remove it — but don't rip it out just because the purpose isn't obvious at a glance.
+- **Kent Beck's rule**: "for each desired change, make the change easy (warning: this may be hard), then make the easy change." When a change is awkward to make in the current structure, prefer a first step that reshapes the code to make the change natural, then make the change as a second, separate step — rather than contorting the new behavior into the existing shape.
+
 ## Build/tooling notes
 
 - Vite uses Rolldown (`vite@^8`) with the React Compiler enabled via `@rolldown/plugin-babel` + `babel-plugin-react-compiler` in `vite.config.ts` — this affects dev/build performance, and lint/type rules should account for compiler-friendly patterns (e.g. no manual memoization needed).
