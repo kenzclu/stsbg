@@ -1,4 +1,5 @@
 import { useState } from "react";
+import swordIcon from "../../assets/sword-icon.png";
 import "./EnemyCard.css";
 
 export type Enemy = {
@@ -65,7 +66,7 @@ export function EnemyCard(props: EnemyCardProps) {
                     disabled={enemy.currentHp <= 0}
                     aria-label={`Deal custom damage to ${enemy.name}`}
                 >
-                    Custom
+                    <img src={swordIcon} alt="" className="damage-icon" />
                 </button>
             )}
         </div>

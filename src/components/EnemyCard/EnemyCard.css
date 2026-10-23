@@ -68,6 +68,11 @@
     }
 }
 
+.damage-icon {
+    width: 16px;
+    height: 16px;
+}
+
 .custom-damage-form {
     display: flex;
     align-items: center;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import swordIcon from "../../assets/sword-icon.png";
 import "./HeroCard.css";
 
 type HeroCardProps = {
@@ -32,7 +33,7 @@ export function HeroCard(props: HeroCardProps) {
                     onClick={() => onDamageEnemies(1)}
                     aria-label="Deal 1 damage to all enemies in row"
                 >
-                    −1 Row
+                    1 <img src={swordIcon} alt="" className="damage-icon" />
                 </button>
                 {amountInput !== null ? (
                     <DamageAmountForm
@@ -47,7 +48,7 @@ export function HeroCard(props: HeroCardProps) {
                         onClick={() => setAmountInput("")}
                         aria-label="Deal custom damage to all enemies in row"
                     >
-                        Custom
+                        <img src={swordIcon} alt="" className="damage-icon" />
                     </button>
                 )}
             </div>
