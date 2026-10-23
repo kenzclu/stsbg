@@ -9,8 +9,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run lint` — run oxlint
 - `npm run preview` — preview the production build locally
 - `npm run format` — format the codebase with Prettier, via the local `.prettierrc.json` (currently empty, so it runs with Prettier's defaults)
+- `npm run test` — run the test suite with Vitest (watch mode by default; use `npm run test -- --run` for a single pass)
 
-There is no test runner configured in this project yet.
+## Testing
+
+- Test runner is Vitest (configured via the `test` block in `vite.config.ts`, using `jsdom`), plus React Testing Library and `@testing-library/user-event` for component tests. Setup file: `src/test/setup.ts`.
+- Default to test-driven development where practical: write or update a test alongside (or before) the implementation change, not as an afterthought.
+- Tests are colocated with the code they cover (`Component.test.tsx` next to `Component.tsx`), matching the project's colocation convention for CSS files.
 
 ## Architecture
 
