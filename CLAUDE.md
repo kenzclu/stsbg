@@ -8,18 +8,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run build` — type-check (`tsc -b`) then production build via Vite
 - `npm run lint` — run oxlint
 - `npm run preview` — preview the production build locally
-- `npx prettier --write .` — format the codebase (Prettier is the formatter used in this repo; no local `.prettierrc`/script is set up yet, so it runs with Prettier's defaults)
+- `npm run format` — format the codebase with Prettier, via the local `.prettierrc.json` (currently empty, so it runs with Prettier's defaults)
 
 There is no test runner configured in this project yet.
 
 ## Architecture
 
-This is a React 19 + TypeScript + Vite app (early stage, minimal setup). Entry point is `src/main.tsx` → `src/App.tsx`.
+This is a React 19 + TypeScript + Vite app. Entry point is `src/main.tsx` → `src/App.tsx`.
 
-- `App.tsx` holds all app state (currently just the list of selected character names) and owns the `AVAILABLE_CHARACTERS` / `MAX_CHARACTERS` constants. Child components are presentational and receive state/callbacks via props — there's no state management library.
+- `App.tsx` holds top-level app state (selected character names, plus a `resetNonce` used to force-remount combat rows on Reset) and owns the `AVAILABLE_CHARACTERS` / `MAX_CHARACTERS` constants. It renders one `CombatRow` per selected character. Child components are presentational and receive state/callbacks via props — there's no state management library.
 - `src/components/CharacterSelect.tsx` — a `<select>` for adding a character, filtered to characters not already picked and disabled once `maxCharacters` is reached.
-- `src/components/HeroCard.tsx` — renders a single selected character; one `HeroCard` is rendered per selected character in `App.tsx`.
-- Each component colocates its own CSS file (e.g. `HeroCard.css` next to `HeroCard.tsx`); global styles live in `src/index.css` and `src/App.css`.
+- `src/components/CombatRow.tsx` — pairs one `HeroCard` with one `EnemyRow` for a selected character and owns that row's enemy list (name, current/max HP) in local state.
+- `src/components/HeroCard.tsx` — the hero side of a combat row; deals preset (1) or custom damage to every enemy in its row via an `onDamageEnemies` callback.
+- `src/components/EnemyRow.tsx` / `src/components/EnemyCard.tsx` — `EnemyRow` renders the row's enemies plus an "add enemy" form (sets starting/max HP); each `EnemyCard` exposes per-enemy HP +/- buttons and a custom-damage form.
+- Most components colocate their own CSS file (`HeroCard.css`, `EnemyCard.css`, `EnemyRow.css`); `CharacterSelect` and `CombatRow` have no CSS file of their own and rely on `App.css`/`index.css`. Global styles live in `src/index.css` and `src/App.css`.
 
 ## Code organization
 
