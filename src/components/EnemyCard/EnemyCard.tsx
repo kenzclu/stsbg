@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import swordIcon from "../../assets/sword-icon.png";
 import poisonIcon from "../../assets/poison-icon.png";
 import blockIcon from "../../assets/block-icon.png";
 import "./EnemyCard.css";
@@ -34,46 +33,47 @@ export function EnemyCard(props: EnemyCardProps) {
         <div className="enemy-card">
             <div className="enemy-top">
                 <div className="label-strong">{enemy.name}</div>
-                <span className="label-strong">{enemy.currentHp}/{enemy.maxHp} HP</span>
-            </div>
-            <div className="enemy-controls">
-                <button
-                    className="adjust-hp"
-                    onClick={() => onAdjustHp(-1)}
-                    disabled={enemy.currentHp <= 0}
-                    aria-label={`Decrease ${enemy.name} HP`}
-                >
-                    −
-                </button>
-                {!isEnteringDamage ? (
+                <div className="hp-row">
                     <button
-                        className="custom-damage"
-                        onClick={() => setIsEnteringDamage(true)}
+                        className="adjust-hp"
+                        onClick={() => onAdjustHp(-1)}
                         disabled={enemy.currentHp <= 0}
-                        aria-label={`Deal custom damage to ${enemy.name}`}
+                        aria-label={`Decrease ${enemy.name} HP`}
                     >
-                        <img src={swordIcon} alt="" className="damage-icon" />
+                        −
                     </button>
-                ) : (
-                    <AmountForm
-                        onSubmit={(amount) => {
-                            onAdjustHp(-amount);
-                            setIsEnteringDamage(false);
-                        }}
-                        onCancel={() => setIsEnteringDamage(false)}
-                        placeholder="Dmg"
-                        inputLabel="Damage amount"
-                        confirmLabel="Confirm damage"
-                    />
-                )}
-                <button
-                    className="adjust-hp"
-                    onClick={() => onAdjustHp(1)}
-                    disabled={enemy.currentHp >= enemy.maxHp}
-                    aria-label={`Increase ${enemy.name} HP`}
-                >
-                    +
-                </button>
+                    {!isEnteringDamage ? (
+                        <button
+                            className="hp-display"
+                            onClick={() => setIsEnteringDamage(true)}
+                            disabled={enemy.currentHp <= 0}
+                            aria-label={`Deal custom damage to ${enemy.name}`}
+                        >
+                            {enemy.currentHp}/{enemy.maxHp} HP
+                        </button>
+                    ) : (
+                        <AmountForm
+                            onSubmit={(amount) => {
+                                onAdjustHp(-amount);
+                                setIsEnteringDamage(false);
+                            }}
+                            onCancel={() => setIsEnteringDamage(false)}
+                            placeholder="Dmg"
+                            inputLabel="Damage amount"
+                            confirmLabel="Confirm damage"
+                        />
+                    )}
+                    <button
+                        className="adjust-hp"
+                        onClick={() => onAdjustHp(1)}
+                        disabled={enemy.currentHp >= enemy.maxHp}
+                        aria-label={`Increase ${enemy.name} HP`}
+                    >
+                        +
+                    </button>
+                </div>
+            </div>
+            <div className="enemy-counters">
                 {COUNTER_TYPES.map((counterType) => (
                     <CounterBadge
                         key={counterType}

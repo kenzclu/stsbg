@@ -32,9 +32,14 @@ describe("EnemyCard", () => {
     expect(screen.getByLabelText("Increase Enemy 1 HP")).not.toBeDisabled();
   });
 
-  it("disables the custom damage button once the enemy is at 0 HP", () => {
+  it("disables the HP display button once the enemy is at 0 HP", () => {
     render(<EnemyCard enemy={makeEnemy({ currentHp: 0 })} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
     expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toBeDisabled();
+  });
+
+  it("shows the enemy's current and max HP", () => {
+    render(<EnemyCard enemy={makeEnemy({ currentHp: 4, maxHp: 10 })} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
+    expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toHaveTextContent("4/10 HP");
   });
 
   it("submits custom damage as a negative delta", async () => {
