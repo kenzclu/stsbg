@@ -64,19 +64,19 @@
 
 .adjust-hp {
     flex: 0 0 auto;
-    padding: 0 10px;
+    padding: 0 24px;
     font-size: 20px;
 }
 
 .hp-display {
     flex: 1 1 0;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .counter-badge {
     flex: 1 1 0;
     gap: 4px;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .counter-icon {
@@ -99,7 +99,7 @@
     background-color: transparent;
     border: 2px solid var(--accent-border);
     color: inherit;
-    font-size: 14px;
+    font-size: 18px;
     text-align: center;
 
     &:focus-visible {
