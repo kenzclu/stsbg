@@ -9,6 +9,7 @@ const MAX_CHARACTERS = 4;
 function App() {
   const [characters, setCharacters] = useState<string[]>([]);
   const [resetNonce, setResetNonce] = useState(0);
+  const [endTurnSignal, setEndTurnSignal] = useState(0);
 
   const onClick = (character: string) => {
     if (characters.includes(character) || characters.length >= MAX_CHARACTERS) {
@@ -30,9 +31,12 @@ function App() {
           <button className="reset-enemies" onClick={() => setResetNonce(resetNonce + 1)}>
             Reset
           </button>
+          <button className="end-turn" onClick={() => setEndTurnSignal(endTurnSignal + 1)}>
+            End Turn
+          </button>
         </div>
         {characters.map((name) => (
-          <CombatRow key={`${name}-${resetNonce}`} heroName={name} />
+          <CombatRow key={`${name}-${resetNonce}`} heroName={name} endTurnSignal={endTurnSignal} />
         ))}
       </div>
     </>

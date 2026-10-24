@@ -37,4 +37,21 @@ describe("App", () => {
 
     expect(screen.queryByText("Enemy 1")).not.toBeInTheDocument();
   });
+
+  it("applies poison damage and clears block when End Turn is clicked", async () => {
+    render(<App />);
+
+    await userEvent.selectOptions(screen.getByRole("combobox"), "Ironclad");
+    await userEvent.click(screen.getByLabelText("Add enemy"));
+    await userEvent.type(screen.getByLabelText("Enemy HP"), "10");
+    await userEvent.click(screen.getByLabelText("Confirm add enemy"));
+    await userEvent.click(screen.getByLabelText("Add poison to Enemy 1"));
+    await userEvent.click(screen.getByLabelText("Add poison to Enemy 1"));
+    await userEvent.click(screen.getByLabelText("Add block to Enemy 1"));
+
+    await userEvent.click(screen.getByRole("button", { name: "End Turn" }));
+
+    expect(screen.getByText("8/10 HP")).toBeInTheDocument();
+    expect(screen.getByLabelText("Add block to Enemy 1")).toHaveTextContent("0");
+  });
 });
