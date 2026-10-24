@@ -165,7 +165,7 @@ type AmountFormProps = {
 function AmountForm(props: AmountFormProps) {
     const { onSubmit, onCancel, placeholder, inputLabel, confirmLabel } = props;
     const [amountInput, setAmountInput] = useState("");
-    const amount = parsePositiveInteger(amountInput);
+    const amount = parseNonZeroInteger(amountInput);
 
     return (
         <form
@@ -179,7 +179,6 @@ function AmountForm(props: AmountFormProps) {
         >
             <input
                 type="number"
-                min="1"
                 step="1"
                 className="custom-damage-input"
                 value={amountInput}
@@ -207,7 +206,7 @@ function AmountForm(props: AmountFormProps) {
     )
 }
 
-function parsePositiveInteger(value: string) {
+function parseNonZeroInteger(value: string) {
     const n = Number(value);
-    return Number.isInteger(n) && n > 0 ? n : null;
+    return Number.isInteger(n) && n !== 0 ? n : null;
 }

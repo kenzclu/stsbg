@@ -24,13 +24,24 @@ describe("HeroCard", () => {
     expect(onDamageEnemies).toHaveBeenCalledWith(7);
   });
 
-  it("keeps confirm disabled for non-positive or non-integer input", async () => {
+  it("keeps confirm disabled for zero or non-integer input", async () => {
     render(<HeroCard name="Ironclad" onDamageEnemies={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
-    await userEvent.type(screen.getByLabelText("Damage amount"), "-1");
+    await userEvent.type(screen.getByLabelText("Damage amount"), "0");
 
     expect(screen.getByLabelText("Confirm damage")).toBeDisabled();
+  });
+
+  it("deals negative damage (healing) to the row when a negative amount is confirmed", async () => {
+    const onDamageEnemies = vi.fn();
+    render(<HeroCard name="Ironclad" onDamageEnemies={onDamageEnemies} />);
+
+    await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
+    await userEvent.type(screen.getByLabelText("Damage amount"), "-4");
+    await userEvent.click(screen.getByLabelText("Confirm damage"));
+
+    expect(onDamageEnemies).toHaveBeenCalledWith(-4);
   });
 
   it("returns to the Custom button after cancelling", async () => {

@@ -53,7 +53,7 @@ describe("EnemyCard", () => {
     expect(onAdjustHp).toHaveBeenCalledWith(-3);
   });
 
-  it("disables confirm until a positive integer is entered", async () => {
+  it("disables confirm until a non-zero integer is entered", async () => {
     render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Deal custom damage to Enemy 1"));
@@ -64,6 +64,17 @@ describe("EnemyCard", () => {
 
     await userEvent.type(screen.getByLabelText("Damage amount"), "{backspace}5");
     expect(screen.getByLabelText("Confirm damage")).not.toBeDisabled();
+  });
+
+  it("submits a negative custom damage amount as healing", async () => {
+    const onAdjustHp = vi.fn();
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} onAdjustCounter={vi.fn()} />);
+
+    await userEvent.click(screen.getByLabelText("Deal custom damage to Enemy 1"));
+    await userEvent.type(screen.getByLabelText("Damage amount"), "-3");
+    await userEvent.click(screen.getByLabelText("Confirm damage"));
+
+    expect(onAdjustHp).toHaveBeenCalledWith(3);
   });
 
   it("cancels the custom damage form on Escape", async () => {
@@ -130,6 +141,31 @@ describe("EnemyCard", () => {
 
       expect(onAdjustCounter).toHaveBeenCalledOnce();
       expect(onAdjustCounter).toHaveBeenCalledWith("poison", 5);
+    });
+
+    it("lets you enter a negative amount to reduce the counter", async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      const onAdjustCounter = vi.fn();
+      render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+      holdFor("Add poison to Enemy 1", 600);
+      await userEvent.type(screen.getByLabelText("Poison amount"), "-2");
+      await userEvent.click(screen.getByLabelText("Confirm poison"));
+
+      expect(onAdjustCounter).toHaveBeenCalledOnce();
+      expect(onAdjustCounter).toHaveBeenCalledWith("poison", -2);
+    });
+
+    it("disables confirm on zero but not on a negative amount", async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
+
+      holdFor("Add poison to Enemy 1", 600);
+      await userEvent.type(screen.getByLabelText("Poison amount"), "0");
+      expect(screen.getByLabelText("Confirm poison")).toBeDisabled();
+
+      await userEvent.type(screen.getByLabelText("Poison amount"), "{backspace}-3");
+      expect(screen.getByLabelText("Confirm poison")).not.toBeDisabled();
     });
 
     it("does not add the quick +1 when the hold ends in a release", () => {

@@ -16,7 +16,7 @@ export function HeroCard(props: HeroCardProps) {
     };
 
     const confirmCustomAmount = () => {
-        const amount = amountInput === null ? null : parsePositiveInteger(amountInput);
+        const amount = amountInput === null ? null : parseNonZeroInteger(amountInput);
         if (amount === null) {
             return;
         }
@@ -76,7 +76,6 @@ function DamageAmountForm(props: DamageAmountFormProps) {
         >
             <input
                 type="number"
-                min="1"
                 step="1"
                 className="damage-amount-input"
                 value={amountInput}
@@ -95,7 +94,7 @@ function DamageAmountForm(props: DamageAmountFormProps) {
                 type="submit"
                 className="confirm-damage-amount"
                 onMouseDown={(e) => e.preventDefault()}
-                disabled={parsePositiveInteger(amountInput) === null}
+                disabled={parseNonZeroInteger(amountInput) === null}
                 aria-label="Confirm damage"
             >
                 ✓
@@ -104,7 +103,7 @@ function DamageAmountForm(props: DamageAmountFormProps) {
     )
 }
 
-function parsePositiveInteger(value: string) {
+function parseNonZeroInteger(value: string) {
     const n = Number(value);
-    return Number.isInteger(n) && n > 0 ? n : null;
+    return Number.isInteger(n) && n !== 0 ? n : null;
 }
