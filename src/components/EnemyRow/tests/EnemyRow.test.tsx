@@ -10,7 +10,7 @@ describe("EnemyRow", () => {
       { name: "Enemy 1", currentHp: 5, maxHp: 10, counters: { poison: 0, block: 0 } },
       { name: "Enemy 2", currentHp: 8, maxHp: 8, counters: { poison: 0, block: 0 } },
     ];
-    render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={vi.fn()} />);
+    render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
 
     expect(screen.getByText("Enemy 1")).toBeInTheDocument();
     expect(screen.getByText("Enemy 2")).toBeInTheDocument();
@@ -22,16 +22,29 @@ describe("EnemyRow", () => {
       { name: "Enemy 1", currentHp: 5, maxHp: 10, counters: { poison: 0, block: 0 } },
       { name: "Enemy 2", currentHp: 5, maxHp: 8, counters: { poison: 0, block: 0 } },
     ];
-    render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={onAdjustHp} />);
+    render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={onAdjustHp} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Increase Enemy 2 HP"));
 
     expect(onAdjustHp).toHaveBeenCalledWith(1, 1);
   });
 
+  it("forwards adjustCounter calls with the enemy's index", async () => {
+    const onAdjustCounter = vi.fn();
+    const enemies: Enemy[] = [
+      { name: "Enemy 1", currentHp: 5, maxHp: 10, counters: { poison: 0, block: 0 } },
+      { name: "Enemy 2", currentHp: 5, maxHp: 8, counters: { poison: 0, block: 0 } },
+    ];
+    render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+    await userEvent.click(screen.getByLabelText("Add poison to Enemy 2"));
+
+    expect(onAdjustCounter).toHaveBeenCalledWith(1, "poison", 1);
+  });
+
   it("adds an enemy with the entered HP as both current and max", async () => {
     const onAddEnemy = vi.fn();
-    render(<EnemyRow enemies={[]} onAddEnemy={onAddEnemy} onAdjustHp={vi.fn()} />);
+    render(<EnemyRow enemies={[]} onAddEnemy={onAddEnemy} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Add enemy"));
     await userEvent.type(screen.getByLabelText("Enemy HP"), "12");
@@ -42,7 +55,7 @@ describe("EnemyRow", () => {
 
   it("does not add an enemy for a non-positive HP value", async () => {
     const onAddEnemy = vi.fn();
-    render(<EnemyRow enemies={[]} onAddEnemy={onAddEnemy} onAdjustHp={vi.fn()} />);
+    render(<EnemyRow enemies={[]} onAddEnemy={onAddEnemy} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Add enemy"));
     expect(screen.getByLabelText("Confirm add enemy")).toBeDisabled();

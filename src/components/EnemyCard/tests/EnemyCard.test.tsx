@@ -10,7 +10,7 @@ function makeEnemy(overrides: Partial<Enemy> = {}): Enemy {
 describe("EnemyCard", () => {
   it("calls onAdjustHp(-1) when the decrease button is clicked", async () => {
     const onAdjustHp = vi.fn();
-    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} />);
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Decrease Enemy 1 HP"));
 
@@ -19,7 +19,7 @@ describe("EnemyCard", () => {
 
   it("calls onAdjustHp(1) when the increase button is clicked", async () => {
     const onAdjustHp = vi.fn();
-    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} />);
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Increase Enemy 1 HP"));
 
@@ -27,19 +27,19 @@ describe("EnemyCard", () => {
   });
 
   it("disables the decrease button at 0 HP and the increase button at max HP", () => {
-    render(<EnemyCard enemy={makeEnemy({ currentHp: 0, maxHp: 10 })} onAdjustHp={vi.fn()} />);
+    render(<EnemyCard enemy={makeEnemy({ currentHp: 0, maxHp: 10 })} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
     expect(screen.getByLabelText("Decrease Enemy 1 HP")).toBeDisabled();
     expect(screen.getByLabelText("Increase Enemy 1 HP")).not.toBeDisabled();
   });
 
   it("disables the custom damage button once the enemy is at 0 HP", () => {
-    render(<EnemyCard enemy={makeEnemy({ currentHp: 0 })} onAdjustHp={vi.fn()} />);
+    render(<EnemyCard enemy={makeEnemy({ currentHp: 0 })} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
     expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toBeDisabled();
   });
 
   it("submits custom damage as a negative delta", async () => {
     const onAdjustHp = vi.fn();
-    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} />);
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Deal custom damage to Enemy 1"));
     await userEvent.type(screen.getByLabelText("Damage amount"), "3");
@@ -49,7 +49,7 @@ describe("EnemyCard", () => {
   });
 
   it("disables confirm until a positive integer is entered", async () => {
-    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} />);
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Deal custom damage to Enemy 1"));
     expect(screen.getByLabelText("Confirm damage")).toBeDisabled();
@@ -62,7 +62,7 @@ describe("EnemyCard", () => {
   });
 
   it("cancels the custom damage form on Escape", async () => {
-    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} />);
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
 
     await userEvent.click(screen.getByLabelText("Deal custom damage to Enemy 1"));
     await userEvent.keyboard("{Escape}");
@@ -72,9 +72,33 @@ describe("EnemyCard", () => {
   });
 
   it("shows the enemy's poison and block counts", () => {
-    render(<EnemyCard enemy={makeEnemy({ counters: { poison: 2, block: 3 } })} onAdjustHp={vi.fn()} />);
+    render(
+      <EnemyCard
+        enemy={makeEnemy({ counters: { poison: 2, block: 3 } })}
+        onAdjustHp={vi.fn()}
+        onAdjustCounter={vi.fn()}
+      />,
+    );
 
-    expect(screen.getByLabelText("Poison counter for Enemy 1")).toHaveTextContent("2");
-    expect(screen.getByLabelText("Block counter for Enemy 1")).toHaveTextContent("3");
+    expect(screen.getByLabelText("Add poison to Enemy 1")).toHaveTextContent("2");
+    expect(screen.getByLabelText("Add block to Enemy 1")).toHaveTextContent("3");
+  });
+
+  it("calls onAdjustCounter(poison, 1) when the poison badge is clicked", async () => {
+    const onAdjustCounter = vi.fn();
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+    await userEvent.click(screen.getByLabelText("Add poison to Enemy 1"));
+
+    expect(onAdjustCounter).toHaveBeenCalledWith("poison", 1);
+  });
+
+  it("calls onAdjustCounter(block, 1) when the block badge is clicked", async () => {
+    const onAdjustCounter = vi.fn();
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+    await userEvent.click(screen.getByLabelText("Add block to Enemy 1"));
+
+    expect(onAdjustCounter).toHaveBeenCalledWith("block", 1);
   });
 });

@@ -6,12 +6,12 @@ import "./EnemyCard.css";
 
 export type CounterType = "poison" | "block";
 
-const COUNTER_TYPES: CounterType[] = ["poison", "block"];
-
 const COUNTER_ICONS: Record<CounterType, string> = {
     poison: poisonIcon,
     block: blockIcon,
 };
+
+const COUNTER_TYPES = Object.keys(COUNTER_ICONS) as CounterType[];
 
 export type Enemy = {
     name: string,
@@ -23,10 +23,11 @@ export type Enemy = {
 type EnemyCardProps = {
     enemy: Enemy,
     onAdjustHp: (delta: number) => void,
+    onAdjustCounter: (counterType: CounterType, delta: number) => void,
 }
 
 export function EnemyCard(props: EnemyCardProps) {
-    const { enemy, onAdjustHp } = props;
+    const { enemy, onAdjustHp, onAdjustCounter } = props;
     const [damageInput, setDamageInput] = useState<string | null>(null);
 
     const cancelCustomDamage = () => {
@@ -79,9 +80,9 @@ export function EnemyCard(props: EnemyCardProps) {
                         enemyName={enemy.name}
                         counterType={counterType}
                         count={enemy.counters[counterType]}
+                        onClick={() => onAdjustCounter(counterType, 1)}
                     />
                 ))}
-                <div className="counter-slot-empty" aria-hidden="true" />
             </div>
             {damageInput !== null && (
                 <CustomDamageForm
@@ -99,17 +100,18 @@ type CounterBadgeProps = {
     enemyName: string,
     counterType: CounterType,
     count: number,
+    onClick: () => void,
 }
 
 function CounterBadge(props: CounterBadgeProps) {
-    const { enemyName, counterType, count } = props;
+    const { enemyName, counterType, count, onClick } = props;
     const label = counterType[0].toUpperCase() + counterType.slice(1);
 
     return (
-        <div className="counter-badge" aria-label={`${label} counter for ${enemyName}`}>
+        <button className="counter-badge" onClick={onClick} aria-label={`Add ${label.toLowerCase()} to ${enemyName}`}>
             <img src={COUNTER_ICONS[counterType]} alt="" className="counter-icon" />
             <span>{count}</span>
-        </div>
+        </button>
     )
 }
 

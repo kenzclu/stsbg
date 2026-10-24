@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { HeroCard } from "../HeroCard/HeroCard";
 import { EnemyRow } from "../EnemyRow/EnemyRow";
-import type { Enemy } from "../EnemyCard/EnemyCard";
+import type { CounterType, Enemy } from "../EnemyCard/EnemyCard";
 
 type CombatRowProps = {
     heroName: string,
@@ -36,10 +36,26 @@ export function CombatRow(props: CombatRowProps) {
         );
     };
 
+    const adjustCounter = (index: number, counterType: CounterType, delta: number) => {
+        updateEnemies((enemies) =>
+            enemies.map((enemy, i) =>
+                i === index
+                    ? {
+                          ...enemy,
+                          counters: {
+                              ...enemy.counters,
+                              [counterType]: clamp(enemy.counters[counterType] + delta, 0, Infinity),
+                          },
+                      }
+                    : enemy,
+            ),
+        );
+    };
+
     return (
         <div className="rows">
             <HeroCard name={heroName} onDamageEnemies={damageAll} />
-            <EnemyRow enemies={enemies} onAddEnemy={addEnemy} onAdjustHp={adjustHp} />
+            <EnemyRow enemies={enemies} onAddEnemy={addEnemy} onAdjustHp={adjustHp} onAdjustCounter={adjustCounter} />
         </div>
     )
 }

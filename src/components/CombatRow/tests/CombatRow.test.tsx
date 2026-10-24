@@ -41,6 +41,19 @@ describe("CombatRow", () => {
     expect(screen.getByText("0/1 HP")).toBeInTheDocument();
   });
 
+  it("increments an enemy's poison count when its poison badge is clicked", async () => {
+    render(<CombatRow heroName="Ironclad" />);
+
+    await userEvent.click(screen.getByLabelText("Add enemy"));
+    await userEvent.type(screen.getByLabelText("Enemy HP"), "10");
+    await userEvent.click(screen.getByLabelText("Confirm add enemy"));
+
+    await userEvent.click(screen.getByLabelText("Add poison to Enemy 1"));
+    await userEvent.click(screen.getByLabelText("Add poison to Enemy 1"));
+
+    expect(screen.getByLabelText("Add poison to Enemy 1")).toHaveTextContent("2");
+  });
+
   it("damages all enemies in the row, not just one", async () => {
     render(<CombatRow heroName="Ironclad" />);
 

@@ -24,12 +24,14 @@
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
     gap: 2px;
     width: 100%;
 }
 
-.adjust-hp {
+.adjust-hp,
+.custom-damage,
+.counter-badge {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +41,6 @@
     background-color: transparent;
     border: 2px solid transparent;
     color: var(--accent);
-    font-size: 20px;
     cursor: pointer;
     transition: border-color 0.3s;
 
@@ -56,31 +57,12 @@
     }
 }
 
+.adjust-hp {
+    font-size: 20px;
+}
+
 .custom-damage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-
-    background-color: transparent;
-    border: 2px solid var(--accent-border);
-    color: var(--accent);
     font-size: 14px;
-    cursor: pointer;
-    transition: border-color 0.3s;
-
-    &:hover:not(:disabled) {
-        border-color: var(--accent);
-    }
-    &:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
-    }
-    &:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-    }
 }
 
 .damage-icon {
@@ -89,26 +71,13 @@
 }
 
 .counter-badge {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 4px;
-    width: 100%;
-    height: 100%;
-
-    border: 2px solid transparent;
-    color: var(--accent);
     font-size: 14px;
 }
 
 .counter-icon {
     width: 22px;
     height: 22px;
-}
-
-.counter-slot-empty {
-    width: 100%;
-    height: 100%;
 }
 
 .custom-damage-form {
