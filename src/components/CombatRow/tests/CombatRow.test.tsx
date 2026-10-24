@@ -12,7 +12,7 @@ describe("CombatRow", () => {
     await userEvent.click(screen.getByLabelText("Confirm add enemy"));
 
     expect(screen.getByText("Enemy 1")).toBeInTheDocument();
-    expect(screen.getByText("10/10 HP")).toBeInTheDocument();
+    expect(screen.getByText("10/10 🩸")).toBeInTheDocument();
   });
 
   it("clamps HP adjustments to the enemy's max HP", async () => {
@@ -24,7 +24,7 @@ describe("CombatRow", () => {
 
     await userEvent.click(screen.getByLabelText("Increase Enemy 1 HP"));
 
-    expect(screen.getByText("10/10 HP")).toBeInTheDocument();
+    expect(screen.getByText("10/10 🩸")).toBeInTheDocument();
   });
 
   it("clamps row damage at 0 HP across all enemies", async () => {
@@ -38,7 +38,7 @@ describe("CombatRow", () => {
     await userEvent.type(screen.getByLabelText("Damage amount"), "5");
     await userEvent.click(screen.getByLabelText("Confirm damage"));
 
-    expect(screen.getByText("0/1 HP")).toBeInTheDocument();
+    expect(screen.getByText("0/1 🩸")).toBeInTheDocument();
   });
 
   it("increments an enemy's poison count when its poison badge is clicked", async () => {
@@ -67,7 +67,7 @@ describe("CombatRow", () => {
 
     await userEvent.click(screen.getByLabelText("Deal 1 damage to all enemies in row"));
 
-    expect(screen.getAllByText("4/5 HP")).toHaveLength(2);
+    expect(screen.getAllByText("4/5 🩸")).toHaveLength(2);
   });
 
   it("applies poison damage and clears block when the turn ends", async () => {
@@ -85,7 +85,7 @@ describe("CombatRow", () => {
 
     rerender(<CombatRow heroName="Ironclad" endTurnSignal={1} />);
 
-    expect(screen.getByText("7/10 HP")).toBeInTheDocument();
+    expect(screen.getByText("7/10 🩸")).toBeInTheDocument();
     expect(screen.getByLabelText("Add block to Enemy 1")).toHaveTextContent("0");
   });
 });

@@ -49,7 +49,7 @@ export function EnemyCard(props: EnemyCardProps) {
                             disabled={enemy.currentHp <= 0}
                             aria-label={`Deal custom damage to ${enemy.name}`}
                         >
-                            {enemy.currentHp}/{enemy.maxHp} HP
+                            {enemy.currentHp}/{enemy.maxHp} 🩸
                         </button>
                     ) : (
                         <AmountForm

@@ -51,7 +51,7 @@ describe("App", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "End Turn" }));
 
-    expect(screen.getByText("8/10 HP")).toBeInTheDocument();
+    expect(screen.getByText("8/10 🩸")).toBeInTheDocument();
     expect(screen.getByLabelText("Add block to Enemy 1")).toHaveTextContent("0");
   });
 });

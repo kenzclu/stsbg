@@ -39,7 +39,7 @@ describe("EnemyCard", () => {
 
   it("shows the enemy's current and max HP", () => {
     render(<EnemyCard enemy={makeEnemy({ currentHp: 4, maxHp: 10 })} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
-    expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toHaveTextContent("4/10 HP");
+    expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toHaveTextContent("4/10 🩸");
   });
 
   it("submits custom damage as a negative delta", async () => {
