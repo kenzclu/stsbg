@@ -1,9 +1,7 @@
 .enemy-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
+    align-items: stretch;
 
     flex: 1 1 150px;
     min-width: 150px;
@@ -11,21 +9,37 @@
     background-color: var(--code-bg);
 }
 
-.enemy-hp {
+.enemy-top {
+    flex: 1 1 50%;
+
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
+}
+
+.enemy-controls {
+    flex: 1 1 50%;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2px;
+    width: 100%;
 }
 
 .adjust-hp {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
 
     background-color: transparent;
     border: 2px solid transparent;
     color: var(--accent);
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     transition: border-color 0.3s;
 
@@ -46,12 +60,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
 
     background-color: transparent;
     border: 2px solid var(--accent-border);
     color: var(--accent);
     font-size: 14px;
-    padding: 4px 8px;
     cursor: pointer;
     transition: border-color 0.3s;
 
@@ -69,8 +84,31 @@
 }
 
 .damage-icon {
-    width: 16px;
-    height: 16px;
+    width: 22px;
+    height: 22px;
+}
+
+.counter-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    height: 100%;
+
+    border: 2px solid transparent;
+    color: var(--accent);
+    font-size: 14px;
+}
+
+.counter-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.counter-slot-empty {
+    width: 100%;
+    height: 100%;
 }
 
 .custom-damage-form {

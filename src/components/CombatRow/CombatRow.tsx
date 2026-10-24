@@ -16,7 +16,10 @@ export function CombatRow(props: CombatRowProps) {
     };
 
     const addEnemy = (maxHp: number) => {
-        updateEnemies((enemies) => [...enemies, { name: `Enemy ${enemies.length + 1}`, currentHp: maxHp, maxHp }]);
+        updateEnemies((enemies) => [
+            ...enemies,
+            { name: `Enemy ${enemies.length + 1}`, currentHp: maxHp, maxHp, counters: { poison: 0, block: 0 } },
+        ]);
     };
 
     const adjustHp = (index: number, delta: number) => {

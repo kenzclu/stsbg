@@ -1,11 +1,23 @@
 import { useState } from "react";
 import swordIcon from "../../assets/sword-icon.png";
+import poisonIcon from "../../assets/poison-icon.png";
+import blockIcon from "../../assets/block-icon.png";
 import "./EnemyCard.css";
+
+export type CounterType = "poison" | "block";
+
+const COUNTER_TYPES: CounterType[] = ["poison", "block"];
+
+const COUNTER_ICONS: Record<CounterType, string> = {
+    poison: poisonIcon,
+    block: blockIcon,
+};
 
 export type Enemy = {
     name: string,
     currentHp: number,
     maxHp: number,
+    counters: Record<CounterType, number>,
 }
 
 type EnemyCardProps = {
@@ -32,8 +44,11 @@ export function EnemyCard(props: EnemyCardProps) {
 
     return (
         <div className="enemy-card">
-            <div className="label-strong">{enemy.name}</div>
-            <div className="enemy-hp">
+            <div className="enemy-top">
+                <div className="label-strong">{enemy.name}</div>
+                <span className="label-strong">{enemy.currentHp}/{enemy.maxHp} HP</span>
+            </div>
+            <div className="enemy-controls">
                 <button
                     className="adjust-hp"
                     onClick={() => onAdjustHp(-1)}
@@ -42,24 +57,6 @@ export function EnemyCard(props: EnemyCardProps) {
                 >
                     −
                 </button>
-                <span className="label-strong">{enemy.currentHp}/{enemy.maxHp} HP</span>
-                <button
-                    className="adjust-hp"
-                    onClick={() => onAdjustHp(1)}
-                    disabled={enemy.currentHp >= enemy.maxHp}
-                    aria-label={`Increase ${enemy.name} HP`}
-                >
-                    +
-                </button>
-            </div>
-            {damageInput !== null ? (
-                <CustomDamageForm
-                    damageInput={damageInput}
-                    onDamageInputChange={setDamageInput}
-                    onConfirm={confirmCustomDamage}
-                    onCancel={cancelCustomDamage}
-                />
-            ) : (
                 <button
                     className="custom-damage"
                     onClick={() => setDamageInput("")}
@@ -68,7 +65,50 @@ export function EnemyCard(props: EnemyCardProps) {
                 >
                     <img src={swordIcon} alt="" className="damage-icon" />
                 </button>
+                <button
+                    className="adjust-hp"
+                    onClick={() => onAdjustHp(1)}
+                    disabled={enemy.currentHp >= enemy.maxHp}
+                    aria-label={`Increase ${enemy.name} HP`}
+                >
+                    +
+                </button>
+                {COUNTER_TYPES.map((counterType) => (
+                    <CounterBadge
+                        key={counterType}
+                        enemyName={enemy.name}
+                        counterType={counterType}
+                        count={enemy.counters[counterType]}
+                    />
+                ))}
+                <div className="counter-slot-empty" aria-hidden="true" />
+            </div>
+            {damageInput !== null && (
+                <CustomDamageForm
+                    damageInput={damageInput}
+                    onDamageInputChange={setDamageInput}
+                    onConfirm={confirmCustomDamage}
+                    onCancel={cancelCustomDamage}
+                />
             )}
+        </div>
+    )
+}
+
+type CounterBadgeProps = {
+    enemyName: string,
+    counterType: CounterType,
+    count: number,
+}
+
+function CounterBadge(props: CounterBadgeProps) {
+    const { enemyName, counterType, count } = props;
+    const label = counterType[0].toUpperCase() + counterType.slice(1);
+
+    return (
+        <div className="counter-badge" aria-label={`${label} counter for ${enemyName}`}>
+            <img src={COUNTER_ICONS[counterType]} alt="" className="counter-icon" />
+            <span>{count}</span>
         </div>
     )
 }

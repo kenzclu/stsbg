@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { EnemyCard, type Enemy } from "../EnemyCard";
 
 function makeEnemy(overrides: Partial<Enemy> = {}): Enemy {
-  return { name: "Enemy 1", currentHp: 5, maxHp: 10, ...overrides };
+  return { name: "Enemy 1", currentHp: 5, maxHp: 10, counters: { poison: 0, block: 0 }, ...overrides };
 }
 
 describe("EnemyCard", () => {
@@ -69,5 +69,12 @@ describe("EnemyCard", () => {
 
     expect(screen.queryByLabelText("Damage amount")).not.toBeInTheDocument();
     expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toBeInTheDocument();
+  });
+
+  it("shows the enemy's poison and block counts", () => {
+    render(<EnemyCard enemy={makeEnemy({ counters: { poison: 2, block: 3 } })} onAdjustHp={vi.fn()} />);
+
+    expect(screen.getByLabelText("Poison counter for Enemy 1")).toHaveTextContent("2");
+    expect(screen.getByLabelText("Block counter for Enemy 1")).toHaveTextContent("3");
   });
 });

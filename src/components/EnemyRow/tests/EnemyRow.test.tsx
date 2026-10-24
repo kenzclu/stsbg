@@ -7,8 +7,8 @@ import type { Enemy } from "../../EnemyCard/EnemyCard";
 describe("EnemyRow", () => {
   it("renders one EnemyCard per enemy", () => {
     const enemies: Enemy[] = [
-      { name: "Enemy 1", currentHp: 5, maxHp: 10 },
-      { name: "Enemy 2", currentHp: 8, maxHp: 8 },
+      { name: "Enemy 1", currentHp: 5, maxHp: 10, counters: { poison: 0, block: 0 } },
+      { name: "Enemy 2", currentHp: 8, maxHp: 8, counters: { poison: 0, block: 0 } },
     ];
     render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={vi.fn()} />);
 
@@ -19,8 +19,8 @@ describe("EnemyRow", () => {
   it("forwards adjustHp calls with the enemy's index", async () => {
     const onAdjustHp = vi.fn();
     const enemies: Enemy[] = [
-      { name: "Enemy 1", currentHp: 5, maxHp: 10 },
-      { name: "Enemy 2", currentHp: 5, maxHp: 8 },
+      { name: "Enemy 1", currentHp: 5, maxHp: 10, counters: { poison: 0, block: 0 } },
+      { name: "Enemy 2", currentHp: 5, maxHp: 8, counters: { poison: 0, block: 0 } },
     ];
     render(<EnemyRow enemies={enemies} onAddEnemy={vi.fn()} onAdjustHp={onAdjustHp} />);
 
