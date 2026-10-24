@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EnemyCard, type Enemy } from "../EnemyCard";
 
@@ -100,5 +100,61 @@ describe("EnemyCard", () => {
     await userEvent.click(screen.getByLabelText("Add block to Enemy 1"));
 
     expect(onAdjustCounter).toHaveBeenCalledWith("block", 1);
+  });
+
+  describe("holding a counter icon", () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    function holdFor(label: string, ms: number) {
+      fireEvent.pointerDown(screen.getByLabelText(label));
+      act(() => {
+        vi.advanceTimersByTime(ms);
+      });
+    }
+
+    it("lets you add a custom amount to the counter", async () => {
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      const onAdjustCounter = vi.fn();
+      render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+      holdFor("Add poison to Enemy 1", 600);
+      await userEvent.type(screen.getByLabelText("Poison amount"), "5");
+      await userEvent.click(screen.getByLabelText("Confirm poison"));
+
+      expect(onAdjustCounter).toHaveBeenCalledOnce();
+      expect(onAdjustCounter).toHaveBeenCalledWith("poison", 5);
+    });
+
+    it("does not add the quick +1 when the hold ends in a release", () => {
+      vi.useFakeTimers();
+      const onAdjustCounter = vi.fn();
+      render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+      const badge = screen.getByLabelText("Add block to Enemy 1");
+      holdFor("Add block to Enemy 1", 600);
+      fireEvent.pointerUp(badge);
+      fireEvent.click(badge);
+
+      expect(onAdjustCounter).not.toHaveBeenCalled();
+    });
+
+    it("keeps a short press as a plain +1", () => {
+      vi.useFakeTimers();
+      const onAdjustCounter = vi.fn();
+      render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={onAdjustCounter} />);
+
+      const badge = screen.getByLabelText("Add block to Enemy 1");
+      holdFor("Add block to Enemy 1", 100);
+      fireEvent.pointerUp(badge);
+      fireEvent.click(badge);
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      expect(onAdjustCounter).toHaveBeenCalledExactlyOnceWith("block", 1);
+      expect(screen.queryByLabelText("Block amount")).not.toBeInTheDocument();
+    });
   });
 });

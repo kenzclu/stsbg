@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import swordIcon from "../../assets/sword-icon.png";
 import poisonIcon from "../../assets/poison-icon.png";
 import blockIcon from "../../assets/block-icon.png";
@@ -28,20 +28,7 @@ type EnemyCardProps = {
 
 export function EnemyCard(props: EnemyCardProps) {
     const { enemy, onAdjustHp, onAdjustCounter } = props;
-    const [damageInput, setDamageInput] = useState<string | null>(null);
-
-    const cancelCustomDamage = () => {
-        setDamageInput(null);
-    };
-
-    const confirmCustomDamage = () => {
-        const amount = damageInput === null ? null : parsePositiveInteger(damageInput);
-        if (amount === null) {
-            return;
-        }
-        onAdjustHp(-amount);
-        setDamageInput(null);
-    };
+    const [isEnteringDamage, setIsEnteringDamage] = useState(false);
 
     return (
         <div className="enemy-card">
@@ -58,14 +45,27 @@ export function EnemyCard(props: EnemyCardProps) {
                 >
                     −
                 </button>
-                <button
-                    className="custom-damage"
-                    onClick={() => setDamageInput("")}
-                    disabled={enemy.currentHp <= 0}
-                    aria-label={`Deal custom damage to ${enemy.name}`}
-                >
-                    <img src={swordIcon} alt="" className="damage-icon" />
-                </button>
+                {!isEnteringDamage ? (
+                    <button
+                        className="custom-damage"
+                        onClick={() => setIsEnteringDamage(true)}
+                        disabled={enemy.currentHp <= 0}
+                        aria-label={`Deal custom damage to ${enemy.name}`}
+                    >
+                        <img src={swordIcon} alt="" className="damage-icon" />
+                    </button>
+                ) : (
+                    <AmountForm
+                        onSubmit={(amount) => {
+                            onAdjustHp(-amount);
+                            setIsEnteringDamage(false);
+                        }}
+                        onCancel={() => setIsEnteringDamage(false)}
+                        placeholder="Dmg"
+                        inputLabel="Damage amount"
+                        confirmLabel="Confirm damage"
+                    />
+                )}
                 <button
                     className="adjust-hp"
                     onClick={() => onAdjustHp(1)}
@@ -80,57 +80,101 @@ export function EnemyCard(props: EnemyCardProps) {
                         enemyName={enemy.name}
                         counterType={counterType}
                         count={enemy.counters[counterType]}
-                        onClick={() => onAdjustCounter(counterType, 1)}
+                        onAdjust={(delta) => onAdjustCounter(counterType, delta)}
                     />
                 ))}
             </div>
-            {damageInput !== null && (
-                <CustomDamageForm
-                    damageInput={damageInput}
-                    onDamageInputChange={setDamageInput}
-                    onConfirm={confirmCustomDamage}
-                    onCancel={cancelCustomDamage}
-                />
-            )}
         </div>
     )
 }
+
+const HOLD_MS = 500;
 
 type CounterBadgeProps = {
     enemyName: string,
     counterType: CounterType,
     count: number,
-    onClick: () => void,
+    onAdjust: (delta: number) => void,
 }
 
 function CounterBadge(props: CounterBadgeProps) {
-    const { enemyName, counterType, count, onClick } = props;
+    const { enemyName, counterType, count, onAdjust } = props;
+    const [isEnteringAmount, setIsEnteringAmount] = useState(false);
+    const holdTimer = useRef<number | undefined>(undefined);
+    const didHold = useRef(false);
     const label = counterType[0].toUpperCase() + counterType.slice(1);
 
+    const startHold = () => {
+        didHold.current = false;
+        holdTimer.current = window.setTimeout(() => {
+            didHold.current = true;
+            setIsEnteringAmount(true);
+        }, HOLD_MS);
+    };
+
+    const endHold = () => {
+        window.clearTimeout(holdTimer.current);
+    };
+
+    const handleClick = () => {
+        if (didHold.current) {
+            didHold.current = false;
+            return;
+        }
+        onAdjust(1);
+    };
+
+    if (isEnteringAmount) {
+        return (
+            <AmountForm
+                onSubmit={(amount) => {
+                    onAdjust(amount);
+                    setIsEnteringAmount(false);
+                }}
+                onCancel={() => setIsEnteringAmount(false)}
+                placeholder="Amt"
+                inputLabel={`${label} amount`}
+                confirmLabel={`Confirm ${counterType}`}
+            />
+        )
+    }
+
     return (
-        <button className="counter-badge" onClick={onClick} aria-label={`Add ${label.toLowerCase()} to ${enemyName}`}>
+        <button
+            className="counter-badge"
+            onClick={handleClick}
+            onPointerDown={startHold}
+            onPointerUp={endHold}
+            onPointerLeave={endHold}
+            aria-label={`Add ${label.toLowerCase()} to ${enemyName}`}
+        >
             <img src={COUNTER_ICONS[counterType]} alt="" className="counter-icon" />
             <span>{count}</span>
         </button>
     )
 }
 
-type CustomDamageFormProps = {
-    damageInput: string,
-    onDamageInputChange: (value: string) => void,
-    onConfirm: () => void,
+type AmountFormProps = {
+    onSubmit: (amount: number) => void,
     onCancel: () => void,
+    placeholder: string,
+    inputLabel: string,
+    confirmLabel: string,
 }
 
-function CustomDamageForm(props: CustomDamageFormProps) {
-    const { damageInput, onDamageInputChange, onConfirm, onCancel } = props;
+function AmountForm(props: AmountFormProps) {
+    const { onSubmit, onCancel, placeholder, inputLabel, confirmLabel } = props;
+    const [amountInput, setAmountInput] = useState("");
+    const amount = parsePositiveInteger(amountInput);
 
     return (
         <form
             className="custom-damage-form"
             onSubmit={(e) => {
                 e.preventDefault();
-                onConfirm();
+                if (amount !== null) {
+                    onSubmit(amount);
+                }
             }}
         >
             <input
@@ -138,24 +182,24 @@ function CustomDamageForm(props: CustomDamageFormProps) {
                 min="1"
                 step="1"
                 className="custom-damage-input"
-                value={damageInput}
-                onChange={(e) => onDamageInputChange(e.target.value)}
+                value={amountInput}
+                onChange={(e) => setAmountInput(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === "Escape") {
                         onCancel();
                     }
                 }}
                 onBlur={onCancel}
-                placeholder="Dmg"
+                placeholder={placeholder}
                 autoFocus
-                aria-label="Damage amount"
+                aria-label={inputLabel}
             />
             <button
                 type="submit"
                 className="confirm-custom-damage"
                 onMouseDown={(e) => e.preventDefault()}
-                disabled={parsePositiveInteger(damageInput) === null}
-                aria-label="Confirm damage"
+                disabled={amount === null}
+                aria-label={confirmLabel}
             >
                 ✓
             </button>
