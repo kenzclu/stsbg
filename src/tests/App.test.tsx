@@ -5,6 +5,18 @@ import App from "../App";
 import { createDataTransfer } from "../tests/createDataTransfer";
 
 describe("App", () => {
+  it("offers only character selection until a character is added", async () => {
+    render(<App />);
+
+    expect(screen.queryByRole("button", { name: "Reset" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "End Turn" })).not.toBeInTheDocument();
+
+    await userEvent.selectOptions(screen.getByRole("combobox"), "Ironclad");
+
+    expect(screen.getByRole("button", { name: "Reset" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "End Turn" })).toBeInTheDocument();
+  });
+
   it("adds a combat row for each selected character", async () => {
     render(<App />);
 

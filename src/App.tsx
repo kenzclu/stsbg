@@ -11,6 +11,7 @@ function App() {
   const [characters, setCharacters] = useState<string[]>([]);
   const [resetNonce, setResetNonce] = useState(0);
   const [endTurnSignal, setEndTurnSignal] = useState(0);
+  const isEmpty = characters.length === 0;
 
   const onClick = (character: string) => {
     if (characters.includes(character) || characters.length >= MAX_CHARACTERS) {
@@ -32,19 +33,23 @@ function App() {
   return (
     <>
       <div className="main-container">
-        <div className="controls">
+        <div className={isEmpty ? "controls empty" : "controls"}>
           <CharacterSelect
             availableCharacters={AVAILABLE_CHARACTERS}
             characters={characters}
             maxCharacters={MAX_CHARACTERS}
             onSelect={onClick}
           />
-          <button className="reset-enemies" onClick={() => setResetNonce(resetNonce + 1)}>
-            Reset
-          </button>
-          <button className="end-turn" onClick={() => setEndTurnSignal(endTurnSignal + 1)}>
-            End Turn
-          </button>
+          {!isEmpty && (
+            <>
+              <button className="reset-enemies" onClick={() => setResetNonce(resetNonce + 1)}>
+                Reset
+              </button>
+              <button className="end-turn" onClick={() => setEndTurnSignal(endTurnSignal + 1)}>
+                End Turn
+              </button>
+            </>
+          )}
         </div>
         {characters.map((name, index) => (
           <DraggableRow key={`${name}-${resetNonce}`} index={index} onMove={moveCharacter}>
