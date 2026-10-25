@@ -1,7 +1,7 @@
 .enemy-row {
     display: flex;
     flex-wrap: wrap;
-    align-content: center;
+    align-content: safe center;
     justify-content: center;
     gap: 12px;
     padding: 12px;
