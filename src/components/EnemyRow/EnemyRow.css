@@ -1,5 +1,6 @@
 .enemy-row {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .add-enemy {

@@ -3,8 +3,8 @@
     flex-direction: column;
     align-items: stretch;
 
-    flex: 1 1 150px;
-    min-width: 150px;
+    flex: 1 1 180px;
+    min-width: 180px;
 }
 
 .enemy-top {
@@ -62,7 +62,7 @@
 
 .adjust-hp {
     flex: 0 0 auto;
-    padding: 0 24px;
+    padding: 0 16px;
     font-size: 20px;
 }
 
