@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { CharacterSelect } from "./components/CharacterSelect/CharacterSelect";
 import { CombatRow } from "./components/CombatRow/CombatRow";
+import { DraggableRow } from "./components/DraggableRow/DraggableRow";
 
 const AVAILABLE_CHARACTERS = ["Ironclad", "Silent", "Defect", "Watcher"];
 const MAX_CHARACTERS = 4;
@@ -16,6 +17,16 @@ function App() {
       return;
     }
     setCharacters([...characters, character]);
+  };
+
+  const moveCharacter = (from: number, to: number) => {
+    if (from === to) {
+      return;
+    }
+    const reordered = [...characters];
+    const [moved] = reordered.splice(from, 1);
+    reordered.splice(to, 0, moved);
+    setCharacters(reordered);
   };
 
   return (
@@ -35,8 +46,10 @@ function App() {
             End Turn
           </button>
         </div>
-        {characters.map((name) => (
-          <CombatRow key={`${name}-${resetNonce}`} heroName={name} endTurnSignal={endTurnSignal} />
+        {characters.map((name, index) => (
+          <DraggableRow key={`${name}-${resetNonce}`} index={index} onMove={moveCharacter}>
+            <CombatRow heroName={name} endTurnSignal={endTurnSignal} />
+          </DraggableRow>
         ))}
       </div>
     </>

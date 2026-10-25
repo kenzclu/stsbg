@@ -6,6 +6,7 @@
     gap: 8px;
 
     background-color: var(--accent-bg);
+    cursor: grab;
 }
 
 .damage-enemies {

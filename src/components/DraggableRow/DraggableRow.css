@@ -1,0 +1,5 @@
+.draggable-row {
+  &.drag-over {
+    border-top-color: var(--accent);
+  }
+}
