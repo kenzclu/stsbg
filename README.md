@@ -2,6 +2,9 @@
 
 A browser app for tracking hero and enemy HP during encounters in the Slay the Spire board game. Pick your characters, add enemies, and deal damage with a tap.
 
+<img width="1462" height="834" alt="image" src="https://github.com/user-attachments/assets/73615f5a-0a8c-44ea-a5de-046d04dab0a0" />
+
+
 ## Features
 
 - Select up to a fixed number of characters for the encounter
