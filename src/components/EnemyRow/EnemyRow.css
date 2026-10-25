@@ -14,7 +14,7 @@
     background-color: transparent;
     border: 2px solid transparent;
     color: var(--accent);
-    font-size: 18px;
+    font-size: 36px;
     cursor: pointer;
     transition: border-color 0.3s;
 
@@ -42,7 +42,7 @@
     background-color: transparent;
     border: 2px solid var(--accent-border);
     color: inherit;
-    font-size: 16px;
+    font-size: 32px;
     text-align: center;
 
     &:focus-visible {
@@ -59,7 +59,7 @@
     background-color: transparent;
     border: 2px solid transparent;
     color: var(--accent);
-    font-size: 18px;
+    font-size: 36px;
     cursor: pointer;
     transition: border-color 0.3s;
 

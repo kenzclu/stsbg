@@ -15,7 +15,7 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
+  font: 36px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
   color: var(--text);
@@ -24,10 +24,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,6 +59,12 @@ body {
   margin: 0;
 }
 
+button,
+select,
+input {
+  font-size: inherit;
+}
+
 h1,
 h2 {
   font-family: var(--heading);
@@ -71,21 +73,21 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 112px;
   letter-spacing: -1.68px;
   margin: 32px 0;
   @media (max-width: 1024px) {
-    font-size: 36px;
+    font-size: 72px;
     margin: 20px 0;
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: 48px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: 40px;
   }
 }
 p {
@@ -106,7 +108,7 @@ code,
 }
 
 code {
-  font-size: 15px;
+  font-size: 30px;
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);

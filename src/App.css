@@ -12,6 +12,11 @@
   right: 12px;
   display: flex;
   gap: 8px;
+
+  button,
+  select {
+    font-size: 13.333px;
+  }
 }
 
 .rows {
@@ -49,7 +54,7 @@
 }
 
 .counter {
-  font-size: 16px;
+  font-size: 32px;
   padding: 5px 10px;
   border-radius: 5px;
   color: var(--accent);
@@ -167,7 +172,7 @@
 
   a {
     color: var(--text-h);
-    font-size: 16px;
+    font-size: 32px;
     border-radius: 6px;
     background: var(--social-bg);
     display: flex;

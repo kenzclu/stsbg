@@ -63,18 +63,18 @@
 .adjust-hp {
     flex: 0 0 auto;
     padding: 0 16px;
-    font-size: 20px;
+    font-size: 40px;
 }
 
 .hp-display {
     flex: 1 1 0;
-    font-size: 18px;
+    font-size: 36px;
 }
 
 .counter-badge {
     flex: 1 1 0;
     gap: 4px;
-    font-size: 18px;
+    font-size: 36px;
 }
 
 .counter-icon {
@@ -97,7 +97,7 @@
     background-color: transparent;
     border: 2px solid var(--accent-border);
     color: inherit;
-    font-size: 18px;
+    font-size: 36px;
     text-align: center;
 
     &:focus-visible {
@@ -115,7 +115,7 @@
     background-color: transparent;
     border: 2px solid transparent;
     color: var(--accent);
-    font-size: 18px;
+    font-size: 36px;
     cursor: pointer;
     transition: border-color 0.3s;
 
