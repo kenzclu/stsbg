@@ -1,5 +1,6 @@
 .draggable-row {
-  &.drag-over {
-    border-top-color: var(--accent);
+  &.drag-over .rows {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent), var(--shadow);
   }
 }
