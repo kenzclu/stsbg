@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { createDataTransfer } from "../../../test/createDataTransfer";
+import { createDataTransfer } from "../../../tests/createDataTransfer";
 import { DraggableRow } from "../DraggableRow";
 
 describe("DraggableRow", () => {

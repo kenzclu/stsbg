@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { DAMAGE_BUTTON, holdDamageButton } from "../../../tests/holdDamageButton";
 import { CombatRow } from "../CombatRow";
 
 describe("CombatRow", () => {
@@ -40,7 +41,7 @@ describe("CombatRow", () => {
     await userEvent.type(screen.getByLabelText("Enemy HP"), "1");
     await userEvent.click(screen.getByLabelText("Confirm add enemy"));
 
-    await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
+    await holdDamageButton();
     await userEvent.type(screen.getByLabelText("Damage amount"), "5");
     await userEvent.click(screen.getByLabelText("Confirm damage"));
 
@@ -71,7 +72,7 @@ describe("CombatRow", () => {
     await userEvent.type(screen.getByLabelText("Enemy HP"), "5");
     await userEvent.click(screen.getByLabelText("Confirm add enemy"));
 
-    await userEvent.click(screen.getByLabelText("Deal 1 damage to all enemies in row"));
+    await userEvent.click(screen.getByLabelText(DAMAGE_BUTTON));
 
     expect(screen.getAllByText("4/5 🩸")).toHaveLength(2);
   });

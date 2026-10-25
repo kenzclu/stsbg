@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Testing
 
-- Test runner is Vitest (configured via the `test` block in `vite.config.ts`, using `jsdom`), plus React Testing Library and `@testing-library/user-event` for component tests. Setup file: `src/test/setup.ts`.
+- Test runner is Vitest (configured via the `test` block in `vite.config.ts`, using `jsdom`), plus React Testing Library and `@testing-library/user-event` for component tests. Setup file: `src/tests/setup.ts`.
 - Default to test-driven development where practical: write or update a test alongside (or before) the implementation change, not as an afterthought.
 - Tests live in a `tests/` subfolder next to the code they cover (e.g. `src/components/HeroCard/tests/HeroCard.test.tsx` next to `src/components/HeroCard/HeroCard.tsx`; `src/tests/App.test.tsx` next to `src/App.tsx`).
 - `playwright` is a devDependency for verifying UI changes visually. For any change to a component's rendered output (layout, styling, new/moved elements), start `npm run dev`, drive it with a short Playwright script (navigate, interact, screenshot), and look at the screenshot before calling the change done — passing unit tests don't prove the layout isn't broken (e.g. overflowing/clipped elements). Vitest/RTL tests check behavior; Playwright screenshots check what it actually looks like.

@@ -1,23 +1,34 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { DAMAGE_BUTTON, holdDamageButton } from "../../../tests/holdDamageButton";
 import { HeroCard } from "../HeroCard";
 
 describe("HeroCard", () => {
-  it("deals 1 damage to the row when the preset button is clicked", async () => {
+  it("deals 1 damage to the row on a quick tap", async () => {
     const onDamageEnemies = vi.fn();
     render(<HeroCard name="Ironclad" onDamageEnemies={onDamageEnemies} />);
 
-    await userEvent.click(screen.getByLabelText("Deal 1 damage to all enemies in row"));
+    await userEvent.click(screen.getByLabelText(DAMAGE_BUTTON));
 
-    expect(onDamageEnemies).toHaveBeenCalledWith(1);
+    expect(onDamageEnemies).toHaveBeenCalledExactlyOnceWith(1);
+  });
+
+  it("opens the custom amount input on hold without dealing damage", async () => {
+    const onDamageEnemies = vi.fn();
+    render(<HeroCard name="Ironclad" onDamageEnemies={onDamageEnemies} />);
+
+    await holdDamageButton();
+
+    expect(screen.getByLabelText("Damage amount")).toBeInTheDocument();
+    expect(onDamageEnemies).not.toHaveBeenCalled();
   });
 
   it("deals custom damage to the row once a positive amount is confirmed", async () => {
     const onDamageEnemies = vi.fn();
     render(<HeroCard name="Ironclad" onDamageEnemies={onDamageEnemies} />);
 
-    await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
+    await holdDamageButton();
     await userEvent.type(screen.getByLabelText("Damage amount"), "7");
     await userEvent.click(screen.getByLabelText("Confirm damage"));
 
@@ -27,7 +38,7 @@ describe("HeroCard", () => {
   it("keeps confirm disabled for zero or non-integer input", async () => {
     render(<HeroCard name="Ironclad" onDamageEnemies={vi.fn()} />);
 
-    await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
+    await holdDamageButton();
     await userEvent.type(screen.getByLabelText("Damage amount"), "0");
 
     expect(screen.getByLabelText("Confirm damage")).toBeDisabled();
@@ -37,19 +48,19 @@ describe("HeroCard", () => {
     const onDamageEnemies = vi.fn();
     render(<HeroCard name="Ironclad" onDamageEnemies={onDamageEnemies} />);
 
-    await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
+    await holdDamageButton();
     await userEvent.type(screen.getByLabelText("Damage amount"), "-4");
     await userEvent.click(screen.getByLabelText("Confirm damage"));
 
     expect(onDamageEnemies).toHaveBeenCalledWith(-4);
   });
 
-  it("returns to the Custom button after cancelling", async () => {
+  it("returns to the damage button after cancelling", async () => {
     render(<HeroCard name="Ironclad" onDamageEnemies={vi.fn()} />);
 
-    await userEvent.click(screen.getByLabelText("Deal custom damage to all enemies in row"));
+    await holdDamageButton();
     await userEvent.keyboard("{Escape}");
 
-    expect(screen.getByLabelText("Deal custom damage to all enemies in row")).toBeInTheDocument();
+    expect(screen.getByLabelText(DAMAGE_BUTTON)).toBeInTheDocument();
   });
 });

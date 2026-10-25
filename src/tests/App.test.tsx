@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../App";
-import { createDataTransfer } from "../test/createDataTransfer";
+import { createDataTransfer } from "../tests/createDataTransfer";
 
 describe("App", () => {
   it("adds a combat row for each selected character", async () => {

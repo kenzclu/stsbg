@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import swordIcon from "../../assets/sword-icon.png";
 import "./HeroCard.css";
+
+const HOLD_MS = 500;
 
 type HeroCardProps = {
     name: string,
@@ -10,6 +12,29 @@ type HeroCardProps = {
 export function HeroCard(props: HeroCardProps) {
     const { name, onDamageEnemies } = props;
     const [amountInput, setAmountInput] = useState<string | null>(null);
+
+    const holdTimer = useRef<number | undefined>(undefined);
+    const holdFired = useRef(false);
+
+    const startHold = () => {
+        holdFired.current = false;
+        holdTimer.current = window.setTimeout(() => {
+            holdFired.current = true;
+            setAmountInput("");
+        }, HOLD_MS);
+    };
+
+    const cancelHold = () => {
+        window.clearTimeout(holdTimer.current);
+    };
+
+    const handleClick = () => {
+        if (holdFired.current) {
+            holdFired.current = false;
+            return;
+        }
+        onDamageEnemies(1);
+    };
 
     const cancelCustomAmount = () => {
         setAmountInput(null);
@@ -28,13 +53,6 @@ export function HeroCard(props: HeroCardProps) {
         <div className="hero-card" draggable>
             <div className="label-strong">{name}</div>
             <div className="damage-enemies">
-                <button
-                    className="damage-enemies-one"
-                    onClick={() => onDamageEnemies(1)}
-                    aria-label="Deal 1 damage to all enemies in row"
-                >
-                    1 <img src={swordIcon} alt="" className="damage-icon" />
-                </button>
                 {amountInput !== null ? (
                     <DamageAmountForm
                         amountInput={amountInput}
@@ -44,9 +62,14 @@ export function HeroCard(props: HeroCardProps) {
                     />
                 ) : (
                     <button
-                        className="damage-enemies-custom"
-                        onClick={() => setAmountInput("")}
-                        aria-label="Deal custom damage to all enemies in row"
+                        className="damage-enemies-button"
+                        onClick={handleClick}
+                        onPointerDown={startHold}
+                        onPointerUp={cancelHold}
+                        onPointerLeave={cancelHold}
+                        onPointerCancel={cancelHold}
+                        onContextMenu={(e) => e.preventDefault()}
+                        aria-label="Deal damage to all enemies in row, hold for custom amount"
                     >
                         <img src={swordIcon} alt="" className="damage-icon" />
                     </button>
