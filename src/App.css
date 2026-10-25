@@ -21,6 +21,31 @@
   grid-auto-flow: column;
 
   height: 100%;
+  background: var(--accent-bg);
+}
+
+.rows.ironclad {
+  --accent: #d1382c;
+  --accent-bg: rgba(160, 30, 30, 0.22);
+  --accent-border: rgba(209, 56, 44, 0.55);
+}
+
+.rows.silent {
+  --accent: #3fa34d;
+  --accent-bg: rgba(50, 140, 70, 0.22);
+  --accent-border: rgba(63, 163, 77, 0.55);
+}
+
+.rows.defect {
+  --accent: #3b8fe0;
+  --accent-bg: rgba(40, 110, 200, 0.22);
+  --accent-border: rgba(59, 143, 224, 0.55);
+}
+
+.rows.watcher {
+  --accent: #9a52d6;
+  --accent-bg: rgba(120, 60, 190, 0.22);
+  --accent-border: rgba(154, 82, 214, 0.55);
 }
 
 .counter {

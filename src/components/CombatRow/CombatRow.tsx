@@ -68,7 +68,7 @@ export function CombatRow(props: CombatRowProps) {
     }, [endTurnSignal]);
 
     return (
-        <div className="rows">
+        <div className={`rows ${heroName.toLowerCase()}`}>
             <HeroCard name={heroName} onDamageEnemies={damageAll} />
             <EnemyRow enemies={enemies} onAddEnemy={addEnemy} onAdjustHp={adjustHp} onAdjustCounter={adjustCounter} />
         </div>

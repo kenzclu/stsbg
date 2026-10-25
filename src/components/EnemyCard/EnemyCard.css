@@ -5,8 +5,6 @@
 
     flex: 1 1 150px;
     min-width: 150px;
-
-    background-color: var(--code-bg);
 }
 
 .enemy-top {

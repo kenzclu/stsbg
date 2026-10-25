@@ -4,6 +4,12 @@ import userEvent from "@testing-library/user-event";
 import { CombatRow } from "../CombatRow";
 
 describe("CombatRow", () => {
+  it.each(["Ironclad", "Silent", "Defect", "Watcher"])("themes the row to the %s character", (heroName) => {
+    const { container } = render(<CombatRow heroName={heroName} />);
+
+    expect(container.firstChild).toHaveClass("rows", heroName.toLowerCase());
+  });
+
   it("adds an enemy with the entered HP as its starting and max HP", async () => {
     render(<CombatRow heroName="Ironclad" />);
 
