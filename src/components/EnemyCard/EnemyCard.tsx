@@ -72,6 +72,12 @@ export function EnemyCard(props: EnemyCardProps) {
                         +
                     </button>
                 </div>
+                <HpBar
+                    enemyName={enemy.name}
+                    currentHp={enemy.currentHp}
+                    maxHp={enemy.maxHp}
+                    shielded={enemy.counters.block > 0}
+                />
             </div>
             <div className="enemy-counters">
                 {COUNTER_TYPES.map((counterType) => (
@@ -84,6 +90,30 @@ export function EnemyCard(props: EnemyCardProps) {
                     />
                 ))}
             </div>
+        </div>
+    )
+}
+
+type HpBarProps = {
+    enemyName: string,
+    currentHp: number,
+    maxHp: number,
+    shielded: boolean,
+}
+
+function HpBar(props: HpBarProps) {
+    const { enemyName, currentHp, maxHp, shielded } = props;
+
+    return (
+        <div
+            className={shielded ? "hp-bar shielded" : "hp-bar"}
+            role="meter"
+            aria-label={`${enemyName} health`}
+            aria-valuenow={currentHp}
+            aria-valuemin={0}
+            aria-valuemax={maxHp}
+        >
+            <div className="hp-bar-fill" style={{ width: `${(currentHp / maxHp) * 100}%` }} />
         </div>
     )
 }

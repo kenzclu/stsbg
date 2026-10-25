@@ -42,6 +42,30 @@ describe("EnemyCard", () => {
     expect(screen.getByLabelText("Deal custom damage to Enemy 1")).toHaveTextContent("4/10 🩸");
   });
 
+  it("shows remaining health on an HP bar", () => {
+    render(<EnemyCard enemy={makeEnemy({ currentHp: 4, maxHp: 10 })} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
+
+    const hpBar = screen.getByRole("meter", { name: "Enemy 1 health" });
+    expect(hpBar).toHaveAttribute("aria-valuenow", "4");
+    expect(hpBar).toHaveAttribute("aria-valuemax", "10");
+  });
+
+  it("marks the HP bar as shielded while the enemy has block", () => {
+    const { rerender } = render(
+      <EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />,
+    );
+    expect(screen.getByRole("meter", { name: "Enemy 1 health" })).not.toHaveClass("shielded");
+
+    rerender(
+      <EnemyCard
+        enemy={makeEnemy({ counters: { poison: 0, block: 3 } })}
+        onAdjustHp={vi.fn()}
+        onAdjustCounter={vi.fn()}
+      />,
+    );
+    expect(screen.getByRole("meter", { name: "Enemy 1 health" })).toHaveClass("shielded");
+  });
+
   it("submits custom damage as a negative delta", async () => {
     const onAdjustHp = vi.fn();
     render(<EnemyCard enemy={makeEnemy()} onAdjustHp={onAdjustHp} onAdjustCounter={vi.fn()} />);

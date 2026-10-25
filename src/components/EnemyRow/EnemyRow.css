@@ -1,25 +1,41 @@
 .enemy-row {
     display: flex;
     flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    min-height: 0;
+    overflow-y: auto;
 }
 
-.add-enemy {
+.add-enemy,
+.add-enemy-form {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 8px;
 
-    flex: 1 1 150px;
-    min-width: 150px;
+    flex: 0 1 140px;
+    min-width: 140px;
+    min-height: 120px;
+    box-sizing: border-box;
+}
 
-    background-color: transparent;
-    border: 2px solid transparent;
+.add-enemy {
+    background: transparent;
+    border: 2px dashed var(--accent-border);
+    border-radius: 12px;
     color: var(--accent);
-    font-size: 36px;
+    font-size: 48px;
     cursor: pointer;
-    transition: border-color 0.3s;
+    transition:
+        border-color 0.2s,
+        background-color 0.2s;
 
     &:hover {
-        border-color: var(--accent-border);
+        border-color: var(--accent);
+        background-color: var(--accent-bg);
     }
     &:focus-visible {
         outline: 2px solid var(--accent);
@@ -27,20 +43,11 @@
     }
 }
 
-.add-enemy-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-
-    flex: 1 1 150px;
-    min-width: 150px;
-}
-
 .add-enemy-input {
-    width: 60px;
-    background-color: transparent;
+    width: 72px;
+    background: rgba(0, 0, 0, 0.35);
     border: 2px solid var(--accent-border);
+    border-radius: 8px;
     color: inherit;
     font-size: 32px;
     text-align: center;
@@ -56,12 +63,13 @@
     justify-content: center;
     align-items: center;
 
-    background-color: transparent;
+    background: transparent;
     border: 2px solid transparent;
+    border-radius: 8px;
     color: var(--accent);
     font-size: 36px;
     cursor: pointer;
-    transition: border-color 0.3s;
+    transition: border-color 0.2s;
 
     &:hover:not(:disabled) {
         border-color: var(--accent-border);
@@ -71,7 +79,7 @@
         outline-offset: 2px;
     }
     &:disabled {
-        opacity: 0.4;
+        opacity: 0.35;
         cursor: not-allowed;
     }
 }
