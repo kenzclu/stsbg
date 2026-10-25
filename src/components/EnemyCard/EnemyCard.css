@@ -151,3 +151,36 @@
     padding: 0 10px;
     font-size: 32px;
 }
+
+@container (max-height: 230px) {
+    .enemy-card {
+        gap: 4px;
+        padding: 6px 10px;
+
+        .label-strong {
+            font-size: 28px;
+            line-height: 1.2;
+        }
+    }
+
+    .hp-row,
+    .enemy-counters {
+        height: 32px;
+    }
+
+    .hp-display,
+    .counter-badge,
+    .custom-damage-input,
+    .confirm-custom-damage {
+        font-size: 26px;
+    }
+
+    .adjust-hp {
+        font-size: 30px;
+    }
+
+    .counter-icon {
+        width: 22px;
+        height: 22px;
+    }
+}

@@ -7,6 +7,14 @@
     padding: 12px;
     min-height: 0;
     overflow-y: auto;
+    container-type: size;
+}
+
+@container (max-height: 230px) {
+    .add-enemy,
+    .add-enemy-form {
+        min-height: 90px;
+    }
 }
 
 .add-enemy,
