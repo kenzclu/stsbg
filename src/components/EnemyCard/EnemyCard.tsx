@@ -169,18 +169,43 @@ function CounterBadge(props: CounterBadgeProps) {
         )
     }
 
-    return (
+    const badge = (
         <button
             className="counter-badge"
             onClick={handleClick}
             onPointerDown={startHold}
             onPointerUp={endHold}
             onPointerLeave={endHold}
-            aria-label={`Add ${label.toLowerCase()} to ${enemyName}`}
+            aria-label={`Add ${counterType} to ${enemyName}`}
         >
             <img src={COUNTER_ICONS[counterType]} alt="" className="counter-icon" />
             <span>{count}</span>
         </button>
+    );
+
+    if (counterType !== "block") {
+        return badge;
+    }
+
+    return (
+        <div className="block-stepper">
+            <button
+                className="adjust-counter"
+                onClick={() => onAdjust(-1)}
+                disabled={count <= 0}
+                aria-label={`Decrease ${enemyName} ${counterType}`}
+            >
+                −
+            </button>
+            {badge}
+            <button
+                className="adjust-counter"
+                onClick={() => onAdjust(1)}
+                aria-label={`Increase ${enemyName} ${counterType}`}
+            >
+                +
+            </button>
+        </div>
     )
 }
 

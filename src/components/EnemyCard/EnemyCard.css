@@ -61,6 +61,7 @@
 }
 
 .adjust-hp,
+.adjust-counter,
 .hp-display,
 .counter-badge,
 .confirm-custom-damage {
@@ -112,6 +113,37 @@
     gap: 6px;
     font-size: 32px;
     font-weight: 600;
+}
+
+.block-stepper {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+
+    background: color-mix(in srgb, var(--block) 12%, transparent);
+    border: 2px solid color-mix(in srgb, var(--block) 55%, transparent);
+    border-radius: 8px;
+
+    .counter-badge,
+    .adjust-counter {
+        background: transparent;
+        border-radius: 6px;
+    }
+
+    .counter-badge {
+        min-width: 0;
+        padding: 0 2px;
+    }
+
+    .adjust-counter {
+        --accent: var(--block);
+        --accent-bg: color-mix(in srgb, var(--block) 20%, transparent);
+        --accent-border: color-mix(in srgb, var(--block) 55%, transparent);
+        flex: 0 0 auto;
+        padding: 0 6px;
+        font-size: 28px;
+    }
 }
 
 .counter-icon {
@@ -177,6 +209,10 @@
 
     .adjust-hp {
         font-size: 30px;
+    }
+
+    .adjust-counter {
+        font-size: 24px;
     }
 
     .counter-icon {

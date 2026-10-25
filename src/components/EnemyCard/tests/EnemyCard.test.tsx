@@ -142,6 +142,35 @@ describe("EnemyCard", () => {
     expect(onAdjustCounter).toHaveBeenCalledWith("block", 1);
   });
 
+  it("steps block up and down with the buttons beside its badge", async () => {
+    const onAdjustCounter = vi.fn();
+    render(
+      <EnemyCard
+        enemy={makeEnemy({ counters: { poison: 0, block: 3 } })}
+        onAdjustHp={vi.fn()}
+        onAdjustCounter={onAdjustCounter}
+      />,
+    );
+
+    await userEvent.click(screen.getByLabelText("Decrease Enemy 1 block"));
+    await userEvent.click(screen.getByLabelText("Increase Enemy 1 block"));
+
+    expect(onAdjustCounter.mock.calls).toEqual([
+      ["block", -1],
+      ["block", 1],
+    ]);
+  });
+
+  it("can't lower block below zero", () => {
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
+    expect(screen.getByLabelText("Decrease Enemy 1 block")).toBeDisabled();
+  });
+
+  it("only gives block step buttons, not poison", () => {
+    render(<EnemyCard enemy={makeEnemy()} onAdjustHp={vi.fn()} onAdjustCounter={vi.fn()} />);
+    expect(screen.queryByLabelText("Decrease Enemy 1 poison")).not.toBeInTheDocument();
+  });
+
   describe("holding a counter icon", () => {
     afterEach(() => {
       vi.useRealTimers();

@@ -37,6 +37,7 @@ This is a React 19 + TypeScript + Vite app. Entry point is `src/main.tsx` → `s
 ## Engineering principles
 
 - **Chesterton's fence**: before removing or changing code that looks odd, pointless, or redundant, understand why it's there first. Check git history/blame and surrounding usage; if there's no clear reason after investigating, it's fine to remove it — but don't rip it out just because the purpose isn't obvious at a glance.
+- **YAGNI**: build for the case in front of you. Prefer the plain, specific form (e.g. `counterType !== "block"`) over a lookup table, config, or abstraction that anticipates more cases. Generalize only when a second real case shows up or the user has said more are coming.
 - **Kent Beck's rule**: "for each desired change, make the change easy (warning: this may be hard), then make the easy change." When a change is awkward to make in the current structure, prefer a first step that reshapes the code to make the change natural, then make the change as a second, separate step — rather than contorting the new behavior into the existing shape.
 
 ## Build/tooling notes
