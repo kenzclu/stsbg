@@ -46,15 +46,6 @@ input {
   font-size: inherit;
 }
 
-input[type='number'] {
-  appearance: textfield;
-
-  &::-webkit-inner-spin-button,
-  &::-webkit-outer-spin-button {
-    appearance: none;
-  }
-}
-
 .label-strong {
   color: var(--text-h);
   font-weight: 700;
