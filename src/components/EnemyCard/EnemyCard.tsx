@@ -176,6 +176,9 @@ function CounterBadge(props: CounterBadgeProps) {
             onPointerDown={startHold}
             onPointerUp={endHold}
             onPointerLeave={endHold}
+            onPointerCancel={endHold}
+            // stops the tablet long-press menu from opening over the hold gesture
+            onContextMenu={(e) => e.preventDefault()}
             aria-label={`Add ${counterType} to ${enemyName}`}
         >
             <img src={COUNTER_ICONS[counterType]} alt="" className="counter-icon" />

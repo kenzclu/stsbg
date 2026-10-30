@@ -110,6 +110,8 @@
 
 .counter-badge {
     flex: 1 1 0;
+    user-select: none;
+    -webkit-touch-callout: none;
     gap: 6px;
     font-size: 32px;
     font-weight: 600;
